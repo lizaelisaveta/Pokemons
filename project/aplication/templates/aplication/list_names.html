@@ -1,8 +1,24 @@
+{% load static %}
 <html>
     <head>
         <title>Pokemons</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static '/css/aplication.css' %}">
     </head>
     <body>
-        <p>Pokemons name</p>
-    </body>
+        <div class="page-header">
+            <h1><a href="/">Pokemon names</a></h1>
+            <form method="GET" action="{% url 'search_results' %}">
+                <input type="text" name="query" placeholder="Введите имя...">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+        {% for name in names %}
+        <div class="name">
+            <p>{{ name }}</p>
+        </div>
+    {% endfor %}
+</body>
 </html>
