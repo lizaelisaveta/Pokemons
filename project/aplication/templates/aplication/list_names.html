@@ -12,7 +12,8 @@
             <h1><a href="/">Pokemon names</a></h1>
             <form method="GET" action="{% url 'search_results' %}">
                 <input type="text" name="query" placeholder="Введите имя...">
-                <button type="submit">Поиск</button>
+                <button type="submit">Поиск</button> 
+                <p>{{ counts }}</p>
             </form>
         </div>
         {% for name in names %}
