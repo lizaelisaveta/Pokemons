@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from .models import Pokemon
 import requests
 
@@ -9,8 +10,23 @@ def list_names(request):
     name_poke = requests.get('https://pokeapi.co/api/v2/pokemon?limit=' + str(counts) + '&offset=0')
     name_poke_json = name_poke.json()
     names = [result['name'] for result in name_poke_json['results']]
+    
+    items_per_page = 20
+    paginator = Paginator(names, items_per_page)
+    page_number = request.GET.get('page')
 
-    return render(request, 'aplication/list_names.html', {'names': names, 'counts': counts})
+    try:
+        page = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        # Если номер страницы не является целым числом, перейдите на первую страницу
+        page = paginator.page(1)
+    except EmptyPage:
+        # Если номер страницы больше, чем общее количество страниц, перейдите на последнюю страницу
+        page = paginator.page(paginator.num_pages)
+
+    
+
+    return render(request, 'aplication/list_names.html', {'names': names, 'counts': counts, 'page': page})
 
 
 def search_results(request):

@@ -3,9 +3,7 @@ h1 a {
     font-family: 'Lobster';
 }
 
-body {
-    padding-left: 0px;
-}
+
 
 .page-header {
     background-color: #5f85cb;
@@ -19,12 +17,7 @@ body {
     text-decoration: none;
 }
 
-.content {
-    margin-left: 40px;
-    
-}
-
-h1, h2, h3, h4 {
+h1 {
     font-family: 'Lobster', cursive;
 }
 
@@ -47,6 +40,13 @@ h1, h2, h3, h4 {
 .name {
     margin-bottom: 15px;
     padding-left: 40px;
+    margin-top: 15px;
+}
+
+.count a{
+    padding-left: 40px;
+    color: #000000;
+    font-weight: bold;
 }
 
 .name h1 a, .name h1 a:visited {

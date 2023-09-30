@@ -13,13 +13,21 @@
             <form method="GET" action="{% url 'search_results' %}">
                 <input type="text" name="query" placeholder="Введите имя...">
                 <button type="submit">Поиск</button> 
-                <p>{{ counts }}</p>
             </form>
         </div>
+
+        <div class="count">
+            <a> Найдено: {{ counts }} покемонов</a>
+        </div>
+
         {% for name in names %}
         <div class="name">
             <p>{{ name }}</p>
         </div>
     {% endfor %}
+        
 </body>
+
+
+
 </html>
