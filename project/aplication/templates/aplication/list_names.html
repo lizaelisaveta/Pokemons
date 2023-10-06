@@ -4,17 +4,39 @@
         <title>Pokemons</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+        {% comment %} <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css"> {% endcomment %}
         <link rel="stylesheet" href="{% static '/css/aplication.css' %}">
     </head>
     <body>
         <div class="page-header">
-            <h1><a href="/">Pokemon names</a></h1>
-            <form method="GET" action="{% url 'search_results' %}">
-                <input type="text" name="query" placeholder="Введите имя...">
+            <h1><a href="/">Pokemon</a></h1>
+            <div class="search-string">
+            <form width="400px" height="200px" method="GET" action="{% url 'search_results' %}">
+                <input type="text" name="query" value="{{ search_query }}" placeholder="Введите имя..." autocomplete="off">
                 <button type="submit">Поиск</button> 
             </form>
         </div>
+        </div>
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1"><img width="20" height="20" src="https://img.icons8.com/ios/50/double-left.png" alt="double-left"/></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><img width="20" height="20" src="https://img.icons8.com/ios/50/back--v1.png" alt="back--v1"/></a>
+                {% endif %}
+        
+                <span class="current">
+                    {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><img width="20" height="20" src="https://img.icons8.com/ios/50/forward--v1.png" alt="forward--v1"/></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"> <img width="20" height="20" src="https://img.icons8.com/ios/50/double-right.png" alt="double-right"/></a>
+                {% endif %}
+            </span>
+        </div>
+        
+
 
         <div class="count">
             <a> Найдено: {{ counts }} покемонов</a>
@@ -26,7 +48,7 @@
         </div>
     {% endfor %}
 </body>
-<div class="pagination">
+<div class="pagination2">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1"><img width="20" height="20" src="https://img.icons8.com/ios/50/double-left.png" alt="double-left"/></a>
@@ -34,7 +56,7 @@
         {% endif %}
 
         <span class="current">
-            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
         </span>
 
         {% if page_obj.has_next %}
