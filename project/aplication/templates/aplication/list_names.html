@@ -42,11 +42,17 @@
             <a> Найдено: {{ counts }} покемонов</a>
         </div>
 
-        {% for name in names %}
+
+        {% comment %} {% for name, image in names|zip(images) %}
+        <img src="{{ image }}" alt="Pokemon Image">
         <div class="name">
             <p>{{ name }}</p>
         </div>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
+    
+    
+
+
 </body>
 <div class="pagination2">
     <span class="step-links">

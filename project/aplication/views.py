@@ -20,13 +20,15 @@ def list_names(request):
     name_poke_json = name_poke.json()
     names = [result['name'] for result in name_poke_json['results']]
     
+    images = display_images(name_poke_json, counts)
+    
     count_pages = 20
     paginator = Paginator(names, count_pages)
     
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'aplication/list_names.html', {'names': page_obj.object_list, 'counts': counts, 'paginator': paginator, 'page_obj': page_obj, 'query': query})
+    return render(request, 'aplication/list_names.html', {'names': page_obj.object_list, 'counts': counts, 'paginator': paginator, 'page_obj': page_obj, 'query': query, 'images': images})
 
 def search_results(request):
     query = ''
@@ -53,3 +55,15 @@ def search_results(request):
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'aplication/list_names.html', {'names': page_obj.object_list, 'counts': len(matching_names), 'paginator':paginator, 'page_obj': page_obj, 'query': query})
+
+
+def display_images(name_poke_json, counts):
+    pokemons = name_poke_json['results']
+    
+    pokeImages = []
+    for pokemon in pokemons:
+        pokeID = pokemon['url'].split('/')[-2]
+        pokeImage = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokeID}.png"
+        pokeImages.append(pokeImage)
+
+    return  pokeImages
