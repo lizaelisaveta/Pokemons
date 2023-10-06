@@ -43,12 +43,9 @@
         </div>
 
 
-        {% comment %} {% for name, image in names|zip(images) %}
-        <img src="{{ image }}" alt="Pokemon Image">
-        <div class="name">
-            <p>{{ name }}</p>
-        </div>
-    {% endfor %} {% endcomment %}
+         {% for image in names %}
+        <img src="{{ image }}" alt="Pokemon Image" width="125" height="125">
+    {% endfor %} 
     
     
 

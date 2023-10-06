@@ -23,7 +23,7 @@ def list_names(request):
     images = display_images(name_poke_json, counts)
     
     count_pages = 20
-    paginator = Paginator(names, count_pages)
+    paginator = Paginator(images, count_pages)
     
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
