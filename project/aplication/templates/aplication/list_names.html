@@ -43,10 +43,23 @@
         </div>
 
 
-         {% for image in names %}
-        <img src="{{ image }}" alt="Pokemon Image" width="125" height="125">
-    {% endfor %} 
-    
+    <div class="container">
+        <div class="row">
+            {%for pokemon in pokemon_list%}
+            <div class="col-md-4">
+                <div class="card">
+                <img src="{{pokemon.image}}" alt="{{pokemon.name}}">
+                <h5 class="card-title">#{{pokemon.id}}      {{pokemon.name}}</h5>
+                {% comment %} <div class="card-body">
+                    <h5 class="card-title">#{{pokemon.id}}   {{pokemon.name}}</h5>
+                    <p class="card-text"> Text about pokemon</p>
+                    <a href="#" class="btn btn-primary">Выбрать для боя</h5>
+                    </div>{% endcomment %}
+                </div> 
+            </div>
+            {%endfor%}
+        </div>
+    </div> 
     
 
 
