@@ -1,0 +1,35 @@
+{% load static %}
+<html>
+    <head>
+        <title>Pokemons</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        {% comment %} <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css"> {% endcomment %}
+        <link rel="stylesheet" href="{% static '/css/aplication.css' %}">
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Pokemon</a></h1>
+        </div>
+    </body>
+
+    <div class="container">
+        <div class="row">
+                <div class="card-about" >
+                    <div class="col d-flex justify-content-center">
+                    <img class="card-img-top" style="width: 200px" src={{ Pokemon.image }} alt={{ Pokemon.name }}>
+                    <div class="card-body">
+                        <h2> Имя: {{ Pokemon.name }}</h2>
+                        <h5> Здоровье: {{ hp }}</h5>
+                        <h5> Атака: {{ attack }}</h5>
+                        <h5> Скорость: {{ speed }}</h5>
+                        <a href="{% url 'list_names' %}" class="btn btn-back"> Вернуться на главную </a> <a href="{% url 'fights' %}" class="btn btn-primary"> Выбрать для боя! </a>
+                    </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+
+</html>
