@@ -37,18 +37,24 @@
         </div>
         
 
-
         <div class="count">
             <a> Найдено: {{ counts }} покемонов</a>
         </div>
 
 
-         {% for image in names %}
-        <img src="{{ image }}" alt="Pokemon Image" width="125" height="125">
-    {% endfor %} 
-    
-    
-
+    <div class="container">
+        <div class="row">
+        {%for pokemon in pokemon_list%}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="card">
+                <img src="{{pokemon.image}}" alt="{{pokemon.name}}" >
+                <a class="card-title" href="{% url 'details' pokemon.name %}">#{{pokemon.id}} {{pokemon.name}}</a>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+      
 
 </body>
 <div class="pagination2">
@@ -68,6 +74,11 @@
         {% endif %}
     </span>
 </div>
+
+
+
+
+
 
 
 </html>

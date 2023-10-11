@@ -6,6 +6,96 @@ h1 a {
 
 
 
+.card {
+    width: 250px;
+    height: 300px;
+    border: 1px solid #e0e3f2;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+.card a {
+    font-size: 18px;
+    margin-left: 6px;
+    margin-top: auto;
+    color: #000000;
+    font-family:  'Raleway',sans-serif;
+  }
+  
+@media (min-width: 768px) {
+    .card {
+        width: 50%;
+        height: 24%;
+    }
+    
+    .card img {
+        width: 100%;
+        height: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+
+    }
+    
+    .card a {
+        font-size: 18px;
+        padding: 8px 1px 0;
+        margin-top: auto;
+    }
+  }
+  
+@media (min-width: 992px) {
+    .card {
+      width: 70%;
+      height: 27%;
+    }
+    
+    .card img {
+        width: 100%;
+        height: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+
+    }
+    
+    .card a {
+      font-size: 20px;
+      padding: 10px 1px 0;
+      margin-top: auto;
+    }
+  }
+  
+@media (min-width: 1200px) {
+    .card {
+      width: 90%;
+      height: 30%;
+    }
+    
+    .card img {
+        width: 100%;
+        height: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+
+    }
+    
+    .card a {
+        font-size: 22px;
+        padding: 10px 1px 0;
+        margin-top: auto;
+        
+    }
+  }
+
+
 .page-header {
     display: flex;
     align-items: center;
@@ -31,14 +121,6 @@ h1 a {
 }
 
 
-.save {
-    float: right;
-}
-
-.name-form textarea, .name-form input {
-    width: 100%;
-}
-
 .top-menu, .top-menu:hover, .top-menu:visited {
     color: #ffffff;
     float: right;
@@ -46,11 +128,7 @@ h1 a {
     margin-right: 20px;
 }
 
-.name {
-    margin-bottom: 15px;
-    padding-left: 40px;
-    margin-top: 15px;
-}
+
 
 .pagination {
     display: flex;
@@ -59,13 +137,11 @@ h1 a {
 }
 
 .pagination2 {
-    position: fixed;
-    bottom: 20;
-    left: 0;
-    right: 0;
     display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: center;
+    align-self: flex-end;
 
 }
 
@@ -75,15 +151,36 @@ h1 a {
     font-weight: bold;
 }
 
-a {
+/* a {
     font-size:large;
     color: #000000;
-}
+} */
 
-.name h1 a, .name h1 a:visited {
+/* .name h1 a, .name h1 a:visited {
     color: #000000;
-}
+} */
 
 .current {
     font-size: medium;
+}
+
+.btn-primary {
+    background: #5f85cb;
+    border-color: #5f85cb;
+    color: #e0e3f2;
+    font-family:  'Raleway',sans-serif;
+    text-transform: uppercase;
+}
+.btn-back {
+    background: #e0e3f2;
+    border-color: #5f85cb;
+    color: #5f85cb;
+    font-family:  'Raleway',sans-serif;
+    margin-right: 10px;
+}
+
+.card-about{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
