@@ -62,14 +62,15 @@ def search_results(request):
     name_poke = requests.get('https://pokeapi.co/api/v2/pokemon?limit=' + str(counts) + '&offset=0')
     name_poke_json = name_poke.json()
     names = [result['name'] for result in name_poke_json['results']]
+    urls = [result['url'] for result in name_poke_json['results']]
     matching_names = [name for name in names if name.lower().startswith(query.lower())]
     
     images = display_images(name_poke_json, counts)
     
-    pokemon_data = [[name for name in matching_names] for image in images]
-    pokemon_list = [Pokemon(name, image, url) for name, image, url in pokemon_data]
+    pokemon_data = [[name for name in matching_names], [image for image in images], [url for url in urls]]
+    pokemon_list = [Pokemon(name, image, url) for name, image, url in zip(*pokemon_data)]
     
-    count_pages = 20
+    count_pages = 18
     paginator = Paginator(pokemon_list, count_pages)
     
     
