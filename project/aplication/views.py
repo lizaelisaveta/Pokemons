@@ -11,6 +11,9 @@ class Pokemon:
         self.id = url.split('/')[-2]
         self.name = name   
         self.image = image
+        # self.hp = hp
+        # self.attack = attack
+        # self.speed = speed
         
 
 
@@ -37,7 +40,7 @@ def list_names(request):
     pokemon_list = [Pokemon(name, image, url) for name, image, url in zip(*pokemon_data)]
     
     
-    count_pages = 18
+    count_pages = 20
     paginator = Paginator(pokemon_list, count_pages)
     
     page_number = request.GET.get('page')
@@ -70,7 +73,7 @@ def search_results(request):
     pokemon_data = [[name for name in matching_names], [image for image in images], [url for url in urls]]
     pokemon_list = [Pokemon(name, image, url) for name, image, url in zip(*pokemon_data)]
     
-    count_pages = 18
+    count_pages = 20
     paginator = Paginator(pokemon_list, count_pages)
     
     
@@ -90,3 +93,13 @@ def display_images(name_poke_json, counts):
         pokeImages.append(pokeImage)
 
     return  pokeImages
+
+
+def details(request):
+    teses = 3
+    return render(request, 'aplication/test.html', {'teses': teses})
+
+
+def fights(request):
+    teses = 1
+    return render(request, 'aplication/test.html', {'teses': teses})
