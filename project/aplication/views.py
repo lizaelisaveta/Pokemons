@@ -125,4 +125,4 @@ def details(request, name):
 
 def fights(request):
     teses = 1
-    return render(request, 'aplication/details.html', {'teses': teses})
+    return render(request, 'aplication/fights.html', {'teses': teses})
