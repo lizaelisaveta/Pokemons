@@ -46,6 +46,7 @@
                     <div class="form-group"  >
                         <label for="hit" style="margin-top: 20px;">Результат:</label>
                         <h3 style="margin-top: 0px;"> {{result}} </h3>
+                        <h5 style="margin-top: 0px;"> В бою с {{enemy.name}}  </h5>
                         <h5 style="margin-top: 0px;"> {{round}} {{num_us}} {{en_num}} </h5>
                     </div>
                     <a href="{% url 'list_names' %}" class="send_on_email"> Отправить результаты на email </a>
