@@ -62,7 +62,7 @@
                             <h5> Скорость: {{ speed }}</h5>
                         </div>
                     </div>
-                    <form action="{% url 'fights' name=Pokemon.name %}" method="post"> {% csrf_token %}
+                    <form action="{% url 'fights1' name=Pokemon.name enemy_name=enemy.name %}" method="post"> {% csrf_token %}
                         <div class="form-group"  >
                             <label for="hit" style="margin-top: 20px;">Введите число:</label>
                             <input type="number" class="form-control" style="width: 200px;" id="hit" name="hit"  step="1" min="0" max="1000" required>

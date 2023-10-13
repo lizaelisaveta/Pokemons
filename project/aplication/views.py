@@ -167,6 +167,40 @@ def fights(request, name):
     enemy = Pokemon(names[random_index[0]], enemy_images[0], urls[random_index[0]], random_index[0])
     details_about_enemy = enemy.get_details(enemy.id)
 
+
+    return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                        'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                        })
+
+def fights1(request, name, enemy_name):
+    count = requests.get('https://pokeapi.co/api/v2/pokemon?limit=1&offset=0')
+    count_poke_json = count.json()
+    counts = count_poke_json['count']
+    name_poke = requests.get('https://pokeapi.co/api/v2/pokemon?limit=' + str(counts) + '&offset=0')
+    name_poke_json = name_poke.json()
+    names = [result['name'] for result in name_poke_json['results']]
+    urls = [result['url'] for result in name_poke_json['results']]
+    matching_names = [name for name in names if name.lower().startswith(name.lower())]
+    
+    images = display_images(name_poke_json, counts)
+    
+    pokemon_data = [[name for name in matching_names], [image for image in images], [url for url in urls]]
+    pokemon_list = [Pokemon(nam, image, url) for nam, image, url in zip(*pokemon_data) if nam == name]
+
+    details_about = pokemon_list[0].get_details(pokemon_list[0].id)
+
+
+    enemy_names = [name for name in names if name.lower().startswith(enemy_name.lower())]
+    indexes = [index for index, name in enumerate(names) if name in enemy_names]
+    random_index = [index+1 for index in indexes]
+
+
+    # random_index = [random.randint(1, counts-1)]
+    enemy_images = display_images_serach(random_index)
+    
+    enemy = Pokemon(names[random_index[0]], enemy_images[0], urls[random_index[0]], random_index[0])
+    details_about_enemy = enemy.get_details(enemy.id)
+
     hp = details_about[0]
     attack = details_about[1]
     hp_enemy = details_about_enemy[0]
