@@ -1,0 +1,98 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <title>Pokemons</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        {% comment %} <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css"> {% endcomment %}
+        <link rel="stylesheet" href="{% static '/css/aplication.css' %}">
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Pokemon</a></h1>
+        </div>
+        </div>
+</head>
+<body>
+
+    <a href="{% url 'list_names' %}" class="btn btn-back" style="margin-left: 20px;"> Вернуться на главную </a> 
+    
+
+    <div class="header-fight">
+        <h1>normal Fights</h1>
+    </div>
+
+
+
+    {% comment %} <div class="fight">
+        <a class="btn btn-primary-one"> Быстрый бой </a> <a class="btn btn-primary" style="margin-left: 20px;"> Обычный бой </a>
+    </div> {% endcomment %}
+
+
+    <div class="container">
+        <div class="row-fight">
+                <div class="card-fight" >
+                    <div class="col d-flex justify-content-center">
+                    <img class="card-img-top" style="width: 150px;" src={{ enemy.image }} alt={{ enemy.name }}>
+                    <div class="card-body">
+                        <h4> Противник </h4>
+                        <h4> {{ enemy.name }}</h4>
+                        <h5> Здоровье: {{ hp_enemy }}</h5>
+                        <h5> Атака: {{ attack_enemy }}</h5>
+                        <h5> Скорость: {{ speed_enemy }}</h5>
+                    </div>
+                    </div>
+                    <div class="form-group"  >
+                        <label for="hit" style="margin-top: 20px;">Результат:</label>
+                        <h3 style="margin-top: 0px;"> {{result}} </h3>
+                        <h5 style="margin-top: 0px;"> В бою с {{enemy.name}}  </h5>
+                        <h5 style="margin-top: 0px;"> {{round}} {{num_us}} {{en_num}} </h5>
+                    </div>
+                    <a href="{% url 'list_names' %}" class="send_on_email"> Отправить результаты на email </a>
+                </div>
+
+                <div class="card-fight2" >
+                    <div class="col d-flex justify-content-center">
+                    <img class="card-img-top" style="width: 150px;" src={{ Pokemon.image }} alt={{ Pokemon.name }}>
+                        <div class="card-body">
+                            <h4> Ваш покемон </h4>
+                            <h4> {{ Pokemon.name }}</h4>
+                            <h5> Здоровье: {{ hp }}</h5>
+                            <h5> Атака: {{ attack }}</h5>
+                            <h5> Скорость: {{ speed }}</h5>
+                        </div>
+                    </div>
+                    <form action="{% url 'fights1' name=Pokemon.name enemy_name=enemy.name %}" method="post"> {% csrf_token %}
+                        <div class="form-group"  >
+                            <label for="hit" style="margin-top: 20px;">Введите число:</label>
+                            <input type="number" class="form-control" style="width: 200px;" id="hit" name="hit"  step="1" min="0" max="1000" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="В бой!" >
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+
+    {% comment %} <script>
+        document.querySelector('.btn-primary-one').addEventListener("click", function() {
+            var input = document.getElementById('hit');
+            input.value = ""; 
+            document.getElementById('hit').setAttribute('disabled', 'disabled');
+        });
+      </script>
+
+      <script>
+        document.querySelector('.btn-primary').addEventListener("click", function() {
+            var input = document.getElementById('hit');
+            document.getElementById('hit').removeAttribute('disabled');
+        });
+      </script> {% endcomment %}
+    
+
+
+
+</body>
+</html>

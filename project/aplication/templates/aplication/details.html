@@ -12,6 +12,7 @@
             <h1><a href="/">Pokemon</a></h1>
         </div>
     </body>
+    <a href="{% url 'list_names' %}" class="btn btn-back" style="margin-left: 20px;"> Вернуться на главную </a> 
 
     <div class="container">
         <div class="row">
@@ -23,7 +24,7 @@
                         <h5> Здоровье: {{ hp }}</h5>
                         <h5> Атака: {{ attack }}</h5>
                         <h5> Скорость: {{ speed }}</h5>
-                        <a href="{% url 'list_names' %}" class="btn btn-back"> Вернуться на главную </a> <a href="{% url 'fights' %}" class="btn btn-primary"> Выбрать для боя! </a>
+                        <a href="{% url 'fights' Pokemon.name %}" class="btn btn-primary"> Выбрать для обычного боя! </a> <a href="{% url 'fastfights' Pokemon.name %}" class="btn btn-primary"> Выбрать для быстрого боя! </a>
                     </div>
                     </div>
                 </div>
