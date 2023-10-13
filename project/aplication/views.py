@@ -172,39 +172,46 @@ def fights(request, name):
     hp_enemy = details_about_enemy[0]
     attack_enemy = details_about_enemy[1]
 
+    date = datetime.now().date()
+    time = datetime.now().time()
+    win_id = -1
 
-    
-    number_user = random.randint(1, 10)
-    number_enemy = random.randint(1, 10)
-    round_сol = 0
-    result = 'ooo'
+    if request.method == 'POST':
+        number_user = (int)(request.POST.get("hit"))
+        number_enemy = random.randint(1, 10)
+        round_сol = 0
+        result = 'ooo'
 
-    if ((number_user%2==1 and number_enemy%2==1) or (number_user%2==0 and number_enemy%2==0)):
-        while (hp_enemy > 0 and hp > 0):
-            hp_enemy = hp_enemy - attack
-            if (hp_enemy > 0):
-                hp = hp - attack_enemy
-                if (hp < 0):
-                    result = 'Выйграл противник'
-            else:
-                result = 'Выйграл ты'
-            round_сol += 1
-        return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
-                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
-                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
-    else:
-        while (hp_enemy > 0 and hp > 0):
-            hp = hp - attack_enemy
-            if (hp > 0):
+        if ((number_user%2==1 and number_enemy%2==1) or (number_user%2==0 and number_enemy%2==0)):
+            while (hp_enemy > 0 and hp > 0):
                 hp_enemy = hp_enemy - attack
-                if (hp_enemy < 0):
+                if (hp_enemy > 0):
+                    hp = hp - attack_enemy
+                    if (hp < 0):
+                        result = 'Выйграл противник'
+                        win_id = enemy.id
+                else:
                     result = 'Выйграл ты'
-            else:
-                result = 'Выйграл противник'
-            round_сol += 1
-        return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
-                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
-                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
+                    win_id = pokemon_list[0].id
+                round_сol += 1
+            return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                        'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                        'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
+        else:
+            while (hp_enemy > 0 and hp > 0):
+                hp = hp - attack_enemy
+                if (hp > 0):
+                    hp_enemy = hp_enemy - attack
+                    if (hp_enemy < 0):
+                        result = 'Выйграл ты'
+                        win_id = pokemon_list[0].id
+                else:
+                    result = 'Выйграл противник'
+                    win_id = enemy.id
+                round_сol += 1
+            return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                        'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                        'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
 
     return 0
 

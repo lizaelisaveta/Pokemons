@@ -6,5 +6,6 @@ urlpatterns = [
     path('search/', views.search_results, name='search_results'),
     path('detail/<str:name>/', views.details, name='details'),
     path('fight/<str:name>/', views.fights, name='fights'),
+    # path('fight/<str:name>/<str:enemy_name>', views.fights, name='fights'),
     path('fastfight/<str:name>/', views.fastfights, name='fastfights'),
 ]
