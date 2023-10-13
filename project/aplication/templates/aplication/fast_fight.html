@@ -20,7 +20,7 @@
     
 
     <div class="header-fight">
-        <h1>normal Fights</h1>
+        <h1>fast Fights</h1>
     </div>
 
 
@@ -46,6 +46,7 @@
                     <div class="form-group"  >
                         <label for="hit" style="margin-top: 20px;">Результат:</label>
                         <h3 style="margin-top: 0px;"> {{result}} </h3>
+                        <h5 style="margin-top: 0px;"> {{round}} {{num_us}} {{en_num}} </h5>
                     </div>
                     <a href="{% url 'list_names' %}" class="send_on_email"> Отправить результаты на email </a>
                 </div>
@@ -61,11 +62,6 @@
                             <h5> Скорость: {{ speed }}</h5>
                         </div>
                     </div>
-                    <div class="form-group"  >
-                        <label for="hit" style="margin-top: 20px;">Введите число:</label>
-                        <input type="number" class="form-control" style="width: 200px;" id="hit" name="hit"  step="1" min="0" max="1000" required>
-                    </div>
-                
                 </div>
         </div>
     </div>

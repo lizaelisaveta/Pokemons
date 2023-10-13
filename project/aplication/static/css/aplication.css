@@ -157,7 +157,7 @@ h1 a {
     color: #e0e3f2;
     font-family:  'Raleway',sans-serif;
     text-transform: uppercase;
-    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .fight {
@@ -169,6 +169,7 @@ h1 a {
 .current {
     font-size: medium;
 }
+
 
 .btn-primary {
     background: #5f85cb;

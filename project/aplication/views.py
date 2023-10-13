@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from .models import Pokemon
 import requests
+from datetime import datetime
 import random
 
 BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
@@ -160,21 +161,120 @@ def fights(request, name):
 
     details_about = pokemon_list[0].get_details(pokemon_list[0].id)
 
-    random_index = [random.randint(1, counts)]
+    random_index = [random.randint(1, counts-1)]
+    enemy_images = display_images_serach(random_index)
+    
+    enemy = Pokemon(names[random_index[0]], enemy_images[0], urls[random_index[0]], random_index[0])
+    details_about_enemy = enemy.get_details(enemy.id)
+
+    hp = details_about[0]
+    attack = details_about[1]
+    hp_enemy = details_about_enemy[0]
+    attack_enemy = details_about_enemy[1]
+
+
+    
+    number_user = random.randint(1, 10)
+    number_enemy = random.randint(1, 10)
+    round_сol = 0
+    result = 'ooo'
+
+    if ((number_user%2==1 and number_enemy%2==1) or (number_user%2==0 and number_enemy%2==0)):
+        while (hp_enemy > 0 and hp > 0):
+            hp_enemy = hp_enemy - attack
+            if (hp_enemy > 0):
+                hp = hp - attack_enemy
+                if (hp < 0):
+                    result = 'Выйграл противник'
+            else:
+                result = 'Выйграл ты'
+            round_сol += 1
+        return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
+    else:
+        while (hp_enemy > 0 and hp > 0):
+            hp = hp - attack_enemy
+            if (hp > 0):
+                hp_enemy = hp_enemy - attack
+                if (hp_enemy < 0):
+                    result = 'Выйграл ты'
+            else:
+                result = 'Выйграл противник'
+            round_сol += 1
+        return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
+
+    return 0
+
+def fastfights(request, name):
+    count = requests.get('https://pokeapi.co/api/v2/pokemon?limit=1&offset=0')
+    count_poke_json = count.json()
+    counts = count_poke_json['count']
+    name_poke = requests.get('https://pokeapi.co/api/v2/pokemon?limit=' + str(counts) + '&offset=0')
+    name_poke_json = name_poke.json()
+    names = [result['name'] for result in name_poke_json['results']]
+    urls = [result['url'] for result in name_poke_json['results']]
+    matching_names = [name for name in names if name.lower().startswith(name.lower())]
+    
+    images = display_images(name_poke_json, counts)
+    
+    pokemon_data = [[name for name in matching_names], [image for image in images], [url for url in urls]]
+    pokemon_list = [Pokemon(nam, image, url) for nam, image, url in zip(*pokemon_data) if nam == name]
+
+    details_about = pokemon_list[0].get_details(pokemon_list[0].id)
+
+    random_index = [random.randint(1, counts-1)]
     enemy_images = display_images_serach(random_index)
     
     enemy = Pokemon(names[random_index[0]], enemy_images[0], urls[random_index[0]], random_index[0])
     details_about_enemy = enemy.get_details(enemy.id)
 
 
-    return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
-                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2]})
+    hp = details_about[0]
+    attack = details_about[1]
+    hp_enemy = details_about_enemy[0]
+    attack_enemy = details_about_enemy[1]
 
+    date = datetime.now().date()
+    time = datetime.now().time()
+    win_id = -1
+    number_user = random.randint(1, 10)
+    number_enemy = random.randint(1, 10)
+    round_сol = 0
+    result = 'ooo'
 
-def fights_fast(request):
-    teses = 1
-    return render(request, 'aplication/fights.html', {'teses': teses})
+    if ((number_user%2==1 and number_enemy%2==1) or (number_user%2==0 and number_enemy%2==0)):
+        while (hp_enemy > 0 and hp > 0):
+            hp_enemy = hp_enemy - attack
+            if (hp_enemy > 0):
+                hp = hp - attack_enemy
+                if (hp < 0):
+                    result = 'Выйграл противник'
+                    win_id = enemy.id
+            else:
+                result = 'Выйграл ты'
+                win_id = pokemon_list[0].id
+            round_сol += 1
+        return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
+    else:
+        while (hp_enemy > 0 and hp > 0):
+            hp = hp - attack_enemy
+            if (hp > 0):
+                hp_enemy = hp_enemy - attack
+                if (hp_enemy < 0):
+                    result = 'Выйграл ты'
+                    win_id = pokemon_list[0].id
+            else:
+                result = 'Выйграл противник'
+                win_id = enemy.id
+            round_сol += 1
+        return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+                                                      'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
+                                                      'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
 
-def fights_simple(request):
-    teses = 1
-    return render(request, 'aplication/fights.html', {'teses': teses})
+    return 0
+
