@@ -341,15 +341,15 @@ def send(fight):
 
     server.starttls()
 
-    server.login('egorovaelizaveta.study@gmail.com', 'dizx dorn vfpg etkk')
+    server.login('', '')
 
     # Создаем письмо
     msg = MIMEText('Бой №' + str(fight.fightid) + '\n Прошел ' + str(fight.date) + ' в ' + str(fight.time) + '\n Между ' + str(fight.poke_id) + ' и ' + str(fight.enemy_id) + '.')
     msg['Subject'] = 'Победил покемон №' + str(fight.win_id)
-    msg['From'] = 'your_email@gmail.com'
-    msg['To'] = 'recipient_email@gmail.com'
+    msg['From'] = ''
+    msg['To'] = ''
 
-    server.sendmail('egorovaelizaveta.study@gmail.com', ['stud0000244380@utmn.ru'], msg.as_string())
+    server.sendmail('', [''], msg.as_string())
     server.quit()
     
 
