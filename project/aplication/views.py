@@ -5,6 +5,9 @@ from .models import Fight
 import requests
 from datetime import datetime
 import random
+import smtplib
+from email.mime.text import MIMEText
+
 
 BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
 
@@ -230,6 +233,7 @@ def fights1(request, name, enemy_name):
                 round_сol += 1
             fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
             fight.save()
+            send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                         'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                         'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -247,6 +251,7 @@ def fights1(request, name, enemy_name):
                 round_сol += 1
             fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
             fight.save()
+            send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                         'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                         'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -303,6 +308,7 @@ def fastfights(request, name):
             round_сol += 1
         fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
         fight.save()
+        send(fight)
         return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                       'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                       'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -320,8 +326,33 @@ def fastfights(request, name):
             round_сol += 1
         fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
         fight.save()
+        
+        
+        send(fight)
+        
+
         return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                       'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                       'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
 
+def send(fight):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.set_debuglevel(True)
 
+    server.starttls()
+
+    server.login('egorovaelizaveta.study@gmail.com', 'dizx dorn vfpg etkk')
+
+    # Создаем письмо
+    msg = MIMEText('Бой №' + str(fight.fightid) + '\n Прошел ' + str(fight.date) + ' в ' + str(fight.time) + '\n Между ' + str(fight.poke_id) + ' и ' + str(fight.enemy_id) + '.')
+    msg['Subject'] = 'Победил покемон №' + str(fight.win_id)
+    msg['From'] = 'your_email@gmail.com'
+    msg['To'] = 'recipient_email@gmail.com'
+
+    server.sendmail('egorovaelizaveta.study@gmail.com', ['stud0000244380@utmn.ru'], msg.as_string())
+    server.quit()
+    
+
+
+def send_result(request):
+    return render(request, 'aplication/message.html', {})

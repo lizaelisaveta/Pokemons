@@ -8,4 +8,5 @@ urlpatterns = [
     path('fights/<str:name>/', views.fights, name='fights'),
     path('fight/<str:name>/<str:enemy_name>', views.fights1, name='fights1'),
     path('fastfight/<str:name>/', views.fastfights, name='fastfights'),
+    path('sendresult/', views.send_result, name='send_result'),
 ]
