@@ -1,20 +1,20 @@
+from datetime import date
+from time import time
+from unittest import result
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
 
-class Pokemon(models.Model):
-    #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    #text = models.TextField()
-    #created_date = models.DateTimeField(default=timezone.now)
-    #published_date = models.DateTimeField(blank=True, null=True)
-
-    #def publish(self):
-        #self.published_date = timezone.now()
-        #self.save()
-
+class Fight(models.Model):
+    fightid = models.IntegerField(db_column='FightId', primary_key=True)
+    date = models.DateField(db_column='Date')
+    time = models.TimeField(db_column='Time')
+    win_id = models.ImageField(db_column='WinnerId')
+    poke_id = models.ImageField(db_column='PokeId')
+    enemy_id = models.ImageField(db_column='EnemyId')
     def __str__(self):
-        return self.name
-    
+        return str(self.fightid)
+    class Meta:
+        db_table = 'fights'
     
