@@ -168,7 +168,7 @@ def fights(request, name):
     details_about_enemy = enemy.get_details(enemy.id)
 
 
-    return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
+    return render(request, 'aplication/fights1.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                         'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                         })
 
