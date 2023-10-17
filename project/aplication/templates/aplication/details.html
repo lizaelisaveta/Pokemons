@@ -21,10 +21,10 @@
                     <img class="card-img-top" style="width: 200px" src={{ Pokemon.image }} alt={{ Pokemon.name }}>
                     <div class="card-body">
                         <h2> Имя: {{ Pokemon.name }}</h2>
-                        <h5> Здоровье: {{ hp }}</h5>
-                        <h5> Атака: {{ attack }}</h5>
-                        <h5> Скорость: {{ speed }}</h5>
-                        <a href="{% url 'fights' Pokemon.name %}" class="btn btn-primary"> Выбрать для обычного боя! </a> <a href="{% url 'fastfights' Pokemon.name %}" class="btn btn-primary"> Выбрать для быстрого боя! </a>
+                        <h5> Здоровье: {{ Pokemon.hp }}</h5>
+                        <h5> Атака: {{ Pokemon.attack }}</h5>
+                        <h5> Скорость: {{ Pokemon.speed }}</h5>
+                         <a href="{% url 'fights' Pokemon.id %}" class="btn btn-primary"> Выбрать для обычного боя! </a> <a href="{% url 'fastfights' Pokemon.id %}" class="btn btn-primary"> Выбрать для быстрого боя! </a> 
                     </div>
                     </div>
                 </div>

@@ -57,12 +57,12 @@
                         <div class="card-body">
                             <h4> Ваш покемон </h4>
                             <h4> {{ Pokemon.name }}</h4>
-                            <h5> Здоровье: {{ hp }}</h5>
-                            <h5> Атака: {{ attack }}</h5>
-                            <h5> Скорость: {{ speed }}</h5>
+                            <h5> Здоровье: {{ Pokemon.hp }}</h5>
+                            <h5> Атака: {{ Pokemon.attack }}</h5>
+                            <h5> Скорость: {{ Pokemon.speed }}</h5>
                         </div>
                     </div>
-                    <form action="{% url 'fights1' name=Pokemon.name enemy_name=enemy.name %}" method="post"> {% csrf_token %}
+                    <form action="{% url 'fights1' id=Pokemon.id enemy_id=enemy.id %}" method="post"> {% csrf_token %}
                         <div class="form-group"  >
                             <label for="hit" style="margin-top: 20px;">Введите число:</label>
                             <input type="number" class="form-control" style="width: 200px;" id="hit" name="hit"  step="1" min="0" max="1000" required>
