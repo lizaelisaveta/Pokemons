@@ -20,7 +20,7 @@ class Fight(models.Model):
 
 
 class Pokemon(models.Model):
-    id = models.IntegerField(db_column='FightId', primary_key=True)
+    id = models.IntegerField(db_column='Id', primary_key=True)
     name = models.CharField(db_column='Name')
     url = models.CharField(db_column='Url')
     image = models.CharField(db_column='Image')

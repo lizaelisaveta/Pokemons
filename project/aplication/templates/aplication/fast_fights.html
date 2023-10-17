@@ -38,9 +38,9 @@
                     <div class="card-body">
                         <h4> Противник </h4>
                         <h4> {{ enemy.name }}</h4>
-                        <h5> Здоровье: {{ hp_enemy }}</h5>
-                        <h5> Атака: {{ attack_enemy }}</h5>
-                        <h5> Скорость: {{ speed_enemy }}</h5>
+                        <h5> Здоровье: {{ enemy.hp }}</h5>
+                        <h5> Атака: {{ enemy.attack }}</h5>
+                        <h5> Скорость: {{ enemy.speed }}</h5>
                     </div>
                     </div>
                     <div class="form-group"  >
@@ -57,12 +57,19 @@
                         <div class="card-body">
                             <h4> Ваш покемон </h4>
                             <h4> {{ Pokemon.name }}</h4>
-                            <h5> Здоровье: {{ hp }}</h5>
-                            <h5> Атака: {{ attack }}</h5>
-                            <h5> Скорость: {{ speed }}</h5>
+                            <h5> Здоровье: {{ Pokemon.hp }}</h5>
+                            <h5> Атака: {{ Pokemon.attack }}</h5>
+                            <h5> Скорость: {{ Pokemon.speed }}</h5>
                         </div>
                     </div>
+                    <form action="{% url 'fastfights' id=Pokemon.id %}" method="post"> {% csrf_token %}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Следующий противник!" >
+                        </div>
+                    </form>
                 </div>
+
+                
         </div>
     </div>
 
