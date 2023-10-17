@@ -17,4 +17,19 @@ class Fight(models.Model):
         return str(self.fightid)
     class Meta:
         db_table = 'fights'
+
+
+class Pokemon(models.Model):
+    id = models.IntegerField(db_column='FightId', primary_key=True)
+    name = models.CharField(db_column='Name')
+    url = models.CharField(db_column='Url')
+    image = models.CharField(db_column='Image')
+    hp = models.IntegerField(db_column='Hp')
+    attack = models.IntegerField(db_column='Attack')
+    speed = models.IntegerField(db_column='Speed')
+
+    def __str__(self):
+        return str(self.id)
+    class Meta:
+        db_table = 'pokemons'
     

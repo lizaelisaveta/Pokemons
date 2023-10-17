@@ -2,6 +2,7 @@ from email.mime import image
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from .models import Fight
+from .models import Pokemon
 import requests
 from datetime import datetime
 import random
@@ -9,27 +10,67 @@ import smtplib
 from email.mime.text import MIMEText
 
 
+
+
+# class Pokemon:
+ 
+#     def __init__(self, id, name, url, ):
+#         self.url = url
+#         self.name = name   
+#         self.image = image
+#         if id:
+#             self.id = id
+#         else:
+#             self.id = url.split('/')[-2]
+
+
+
+#     def get_details(self, id):
+#         response = requests.get(f"{BASE_URL}/{id}").json()
+#         hp = response['stats'][0]['base_stat']
+#         attack = response['stats'][1]['base_stat']
+#         speed = response['stats'][-1]['base_stat']
+#         arrays = [hp, attack, speed]
+#         return arrays
 BASE_URL = 'https://pokeapi.co/api/v2/pokemon'
 
-class Pokemon:
- 
-    def __init__(self, name, image,url,id=None):
-        self.url = url
-        self.name = name   
-        self.image = image
-        if id:
-            self.id = id
-        else:
-            self.id = url.split('/')[-2]
+def get_details(id):
+    response = requests.get(f"{BASE_URL}/{id}").json()
+    hp = response['stats'][0]['base_stat']
+    attack = response['stats'][1]['base_stat']
+    speed = response['stats'][-1]['base_stat']
+    name = response['name']
+    url = response['abilities']['ability']['url']
+    image = display_images_serach(id)
+    arrays = [hp, attack, speed, name, url, image]
+    return arrays
+
+# def download_pokemons():
+#     count = requests.get('https://pokeapi.co/api/v2/pokemon?limit=1&offset=0')
+#     count_poke_json = count.json()
+#     counts = count_poke_json['count']
+#     # name_poke = requests.get('https://pokeapi.co/api/v2/pokemon?limit=' + str(counts) + '&offset=0')
+#     # name_poke_json = name_poke.json()
+#     # names = [result['name'] for result in name_poke_json['results']]
+#     # urls = [result['url'] for result in name_poke_json['results']]
+
+#     # indexes = [index for index, name in enumerate(names) if name in names]
+#     # indexes = [index+1 for index in indexes]
+    
+#     # images = display_images_serach(indexes)
+    
+#     # pokemon_data = [[name for name in names], [image for image in images],[url for url in urls], [ind for ind in indexes] ]
+#     # pokemon_list = [(name, image,url,id) for name, image, url,id in zip(*pokemon_data)]
+
+#     for i in range(counts):
+#         details_about = get_details(i)
+#         poke = Pokemon(i, details_about[3], details_about[4], details_about[5], details_about[0], details_about[1], details_about[2])
+#         poke.save()
 
 
-    def get_details(self, id):
-        response = requests.get(f"{BASE_URL}/{id}").json()
-        hp = response['stats'][0]['base_stat']
-        attack = response['stats'][1]['base_stat']
-        speed = response['stats'][-1]['base_stat']
-        arrays = [hp, attack, speed]
-        return arrays
+# def list_names1(request):
+#     download_pokemons()
+
 
 
 def list_names(request):
