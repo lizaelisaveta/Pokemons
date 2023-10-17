@@ -233,7 +233,7 @@ def fights1(request, name, enemy_name):
                 round_сol += 1
             fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
             fight.save()
-            send(fight)
+            # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                         'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                         'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -251,7 +251,7 @@ def fights1(request, name, enemy_name):
                 round_сol += 1
             fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
             fight.save()
-            send(fight)
+            # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                         'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                         'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -308,7 +308,7 @@ def fastfights(request, name):
             round_сol += 1
         fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy.id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy.id))
         fight.save()
-        send(fight)
+        # send(fight)
         return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
                                                       'enemy': enemy, 'hp_enemy': details_about_enemy[0], 'attack_enemy': details_about_enemy[1], 'speed_enemy': details_about_enemy[2],
                                                       'result':result, 'name': pokemon_list[0].name, 'enemy_name': enemy.name, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -328,7 +328,7 @@ def fastfights(request, name):
         fight.save()
         
         
-        send(fight)
+        # send(fight)
         
 
         return render(request, 'aplication/fast_fight.html', {'Pokemon': pokemon_list[0], 'hp': details_about[0], 'attack': details_about[1], 'speed': details_about[2],
