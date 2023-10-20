@@ -9,4 +9,5 @@ urlpatterns = [
     path('fight/<int:id>/<int:enemy_id>', views.fights1, name='fights1'),
     path('fastfight/<int:id>/', views.fastfights, name='fastfights'),
     path('sendresult/', views.send_result, name='send_result'),
+    path('savedoc/<int:id>/', views.save_doc_about, name='save_doc_about'),
 ]

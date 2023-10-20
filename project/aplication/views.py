@@ -6,6 +6,7 @@ from .models import Pokemon
 import requests
 from datetime import datetime
 import random
+import os
 import smtplib
 from email.mime.text import MIMEText
 
@@ -233,3 +234,26 @@ def send(fight):
 
 def send_result(request):
     return render(request, 'aplication/message.html', {})
+
+
+def save_doc_about(request, id):
+    pokemon_list = Pokemon.objects.filter(id=id)[0]
+    date = datetime.now().date()
+    
+    folder_path = "/Users/liza/Documents/Pokemons/"
+
+    folder_name = str(date)
+
+    if not os.path.exists(folder_path + folder_name):
+        os.makedirs(folder_path + folder_name)
+
+    file_path = os.path.join(folder_path + folder_name, str(pokemon_list.name) + '.md')
+    
+    with open(file_path, "w") as file:
+        file.write(f"# Pokemon {pokemon_list.name}\n\n")
+        file.write(f"Hp: **{pokemon_list.hp}**\n")
+        file.write(f"Attack: **{pokemon_list.attack}**\n")
+        file.write(f"Speed: **{pokemon_list.speed}**\n")
+        file.write(f"![{pokemon_list.name}]({pokemon_list.image})\n")
+
+    return render(request, 'aplication/savedoc.html', {})
