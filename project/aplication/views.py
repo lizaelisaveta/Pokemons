@@ -1,5 +1,5 @@
 from email.mime import image
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from .models import Fight
 from .models import Pokemon
@@ -257,4 +257,7 @@ def download_pokemons(request):
             continue
         else:
             poke.save()
+            
+    return redirect('list_names', request)
+
 
