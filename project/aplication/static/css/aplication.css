@@ -188,6 +188,15 @@ h1 a {
     margin-right: 10px;
 }
 
+.btn-backs {
+    background: #e0e3f2;
+    border-color: #5f85cb;
+    color: #5f85cb;
+    font-family:  'Raleway',sans-serif;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 
 .card-about{
     display: flex;
