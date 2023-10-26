@@ -9,6 +9,32 @@ import random
 import os
 import smtplib
 from email.mime.text import MIMEText
+import json
+from django.conf import settings
+import redis
+
+
+redis_client = redis.StrictRedis(host=settings.REDIS_HOST,
+                                  port=settings.REDIS_PORT, db=0)
+
+
+def get_pokemons(page):
+    key = 'pokemons_{}'.format(page)
+    data = redis_client.get(key)
+    if data:
+        return json.loads(data)
+    
+    pokemons = Pokemon.objects.all().order_by('id')[(int(page) - 1) * 20: int(page) * 20]
+    data = []
+    for pokemon in pokemons:
+        data.append({
+            'name': pokemon.name,
+            'id': pokemon.id,
+            'image': pokemon.image
+        })
+    redis_client.setex(key, 3600, json.dumps(data))
+
+    return data
 
 
 def list_names(request):
@@ -19,17 +45,28 @@ def list_names(request):
     if request.GET.get('query'):
         query = request.GET.get('query')
         request.session['search_query'] = query
-
-    pokemon_list = Pokemon.objects.all()
-    
+  
     count_pages = 20
-    paginator = Paginator(pokemon_list, count_pages)
+    if request.GET.get('page'):
+        page_number = request.GET.get('page')
+    else:
+        page_number = 1
     
-    page_number = request.GET.get('page')
+    all_data = Pokemon.objects.all()
+    
+    key = 'pokemon_{}'.format(page_number)
+    data = redis_client.get(key)
+    if data:
+        pokemon_list = json.loads(data)
+    else:
+        pokemon_list = get_pokemons(page_number)
+        
+    paginator = Paginator(all_data, count_pages)
+    
     page_obj = paginator.get_page(page_number)
-    
+    page_obj.object_list = pokemon_list
 
-    return render(request, 'aplication/list_names.html', {'pokemon_list': page_obj.object_list, 'counts': pokemon_list.count, 'paginator': paginator, 'page_obj': page_obj, 'query': query}) #
+    return render(request, 'aplication/list_names.html', {'pokemon_list': page_obj.object_list, 'counts': Pokemon.objects.all().count, 'paginator': paginator, 'page_obj': page_obj, 'query': query})
 
 
 def search_results(request):
