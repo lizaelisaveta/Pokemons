@@ -160,7 +160,7 @@ def fights1(request, id, enemy_id):
 
 def fastfights(request, id):
     pokemon_list = Pokemon.objects.filter(id=id)
-    random_index = random.randint(1, 1016)
+    random_index = random.randint(1, 2)
     enemy = Pokemon.objects.filter(id=int(random_index))
     
     hp = pokemon_list[0].hp

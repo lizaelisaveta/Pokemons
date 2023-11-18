@@ -1,7 +1,7 @@
 {% load static %}
 <html>
     <head>
-        <title>Pokemons</title>
+        <title>Pokemon Details</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         {% comment %} <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css"> {% endcomment %}
@@ -24,7 +24,7 @@
                         <h5> Здоровье: {{ Pokemon.hp }}</h5>
                         <h5> Атака: {{ Pokemon.attack }}</h5>
                         <h5> Скорость: {{ Pokemon.speed }}</h5>
-                         <a href="{% url 'fights' Pokemon.id %}" class="btn btn-primary"> Выбрать для обычного боя! </a> <a href="{% url 'fastfights' Pokemon.id %}" class="btn btn-primary"> Выбрать для быстрого боя! </a> 
+                         <a href="{% url 'fights' Pokemon.id %}" class="btn btn-primary" name="button_my"> Выбрать для обычного боя! </a> <a href="{% url 'fastfights' Pokemon.id %}" class="btn btn-primary"> Выбрать для быстрого боя! </a> 
                     </div>
                     <a href="{% url 'save_doc_about' id=Pokemon.id %}" class="btn btn-backs"> Сохранить данные о покемоне </a>
                     </div>
