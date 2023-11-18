@@ -5,7 +5,8 @@ services:
     build: .
     image: lizaelizaveta/pokemons:latest
     container_name: pokemons-otrpo
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py test aplication
     ports:
       - 8000:8000
     depends_on:
@@ -14,6 +15,8 @@ services:
     networks:
       - db-conn
       - redis-conn
+    links:
+      - chrome
   db:
     image: postgres:latest
     container_name: pokemons-db
