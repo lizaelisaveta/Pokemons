@@ -136,7 +136,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл ты'
                     win_id = pokemon_list[0].id
                 round_сol += 1
-            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -152,7 +152,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл противник'
                     win_id = enemy[0].id
                 round_сol += 1
-            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -188,7 +188,7 @@ def fastfights(request, id):
                 result = 'Выйграл ты'
                 win_id = pokemon_list[0].id
             round_сol += 1
-        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
         fight.save()
         # send(fight)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -204,7 +204,7 @@ def fastfights(request, id):
                 result = 'Выйграл противник'
                 win_id = enemy[0].id
             round_сol += 1
-        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
         fight.save()
         # send(fight)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
