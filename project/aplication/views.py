@@ -13,6 +13,10 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.conf import settings
 import redis
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from aplication.forms import RegisterForm
+
 
 
 redis_client = redis.StrictRedis(host=settings.REDIS_HOST,
@@ -304,8 +308,12 @@ def profile(request):
     return render(request, 'aplication/profile.html')
 
 
-# def login(request):
-#     return render(request, 'aplication/registration/login.html')
-
+class RegisterView(FormView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy("profile")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 

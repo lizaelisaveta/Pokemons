@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .views import RegisterView
 
 urlpatterns = [
     path('', views.list_names, name='list_names'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('sendresult/', views.send_result, name='send_result'),
     path('savedoc/<int:id>/', views.save_doc_about, name='save_doc_about'),
     path('downloadpokemons/', views.download_pokemons, name='download_pokemons'),
+    path('register', RegisterView.as_view(), name="register"),
 ]
