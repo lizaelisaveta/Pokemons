@@ -19,8 +19,8 @@ from aplication.forms import RegisterForm
 
 
 
-redis_client = redis.StrictRedis(host=settings.REDIS_HOST,
-                                  port=settings.REDIS_PORT, db=0)
+redis_client = redis.StrictRedis(host='otrpo-redis',
+                                  port=6379, db=0)
 
 
 def get_pokemons(page):
@@ -141,7 +141,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл ты'
                     win_id = pokemon_list[0].id
                 round_сol += 1
-            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -157,7 +157,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл противник'
                     win_id = enemy[0].id
                 round_сol += 1
-            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -193,7 +193,7 @@ def fastfights(request, id):
                 result = 'Выйграл ты'
                 win_id = pokemon_list[0].id
             round_сol += 1
-        fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
         fight.save()
         # send(fight)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -209,7 +209,7 @@ def fastfights(request, id):
                 result = 'Выйграл противник'
                 win_id = enemy[0].id
             round_сol += 1
-        fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
         fight.save()
         # send(fight)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  pokemons:
+    build: .
+    image: lizaelizaveta/pokemons:latest
+    container_name: pokemons-otrpo
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - redis
+    networks:
+      - db-conn
+      - redis-conn
+  db:
+    image: postgres:latest
+    container_name: pokemons-db
+    environment:
+      - POSTGRES_DB=fights
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=omgssmyalg
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - db-conn
+  redis:
+    image: redis:7.0.9-alpine
+    container_name: otrpo-redis
+    restart: unless-stopped
+    command: redis-server --port 6379
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - redis-conn
+
+volumes:
+  db-data:
+  redis-data:
+
+networks:
+  db-conn:
+    driver: bridge
+  redis-conn:
+    driver: bridge

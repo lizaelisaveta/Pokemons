@@ -1,0 +1,6 @@
+{
+    "POSTGRES_DB": "fights",
+    "POSTGRES_USER": "postgres",
+    "POSTGRES_PASSWORD": "omgssmyalg",
+    "REDIS_PORT": "6379"
+}
