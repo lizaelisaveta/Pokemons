@@ -188,6 +188,12 @@ h1 a {
     margin-right: 10px;
 }
 
+.btn-back2 {
+    color: #e0e3f2;
+    font-family:  'Raleway',sans-serif;
+    margin-right: 10px;
+}
+
 .btn-backs {
     background: #e0e3f2;
     border-color: #5f85cb;
@@ -215,8 +221,6 @@ h1 a {
 }
 
 
-
-
 .row-fight {
     display: flex;
     flex-direction: row-reverse;
@@ -230,3 +234,5 @@ h1 a {
 .card-fight2{
     margin-right: auto;
 }
+
+

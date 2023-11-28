@@ -9,6 +9,7 @@ import random
 import os
 import smtplib
 from email.mime.text import MIMEText
+from django.contrib.auth.decorators import login_required
 import json
 from django.conf import settings
 import redis
@@ -296,5 +297,15 @@ def download_pokemons(request):
             poke.save()
             
     return redirect('list_names', request)
+
+
+@login_required
+def profile(request):
+    return render(request, 'aplication/profile.html')
+
+
+# def login(request):
+#     return render(request, 'aplication/registration/login.html')
+
 
 
