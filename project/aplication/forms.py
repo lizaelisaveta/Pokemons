@@ -4,6 +4,6 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
 
 
-class RegisterForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ("email", )
+class RegisterForm(forms.Form):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"class": "form-control;"}))
+

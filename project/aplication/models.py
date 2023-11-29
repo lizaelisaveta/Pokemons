@@ -14,8 +14,8 @@ class Fight(models.Model):
     win_id = models.ImageField(db_column='WinnerId')
     poke_id = models.ImageField(db_column='PokeId')
     enemy_id = models.ImageField(db_column='EnemyId')
-    userid = models.UUIDField(db_column='UserId', default=uuid.uuid4, editable=False)
     fightid = models.UUIDField(db_column='FightId', primary_key=True, default=uuid.uuid4, editable=False)
+    userid = models.IntegerField(db_column='UserId')
 
 
     def __str__(self):

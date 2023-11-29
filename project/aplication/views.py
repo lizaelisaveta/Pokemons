@@ -1,16 +1,22 @@
 from email.mime import image
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Fight
 from .models import Pokemon
 import requests
+from django.contrib.auth.models import User
 from datetime import datetime
+import string
 import random
 import os
 import smtplib
+import secrets
+import uuid
 from email.mime.text import MIMEText
 from django.contrib.auth.decorators import login_required
 import json
+from django.core.cache import cache
+from django.core.mail import send_mail
 from django.conf import settings
 import redis
 from django.urls import reverse_lazy
@@ -19,8 +25,8 @@ from aplication.forms import RegisterForm
 
 
 
-redis_client = redis.StrictRedis(host='otrpo-redis',
-                                  port=6379, db=0)
+redis_client = redis.StrictRedis(host=settings.REDIS_HOST,
+                                  port=settings.REDIS_PORT, db=0)
 
 
 def get_pokemons(page):
@@ -42,7 +48,7 @@ def get_pokemons(page):
     return data
 
 
-def list_names(request):
+def list_names(request):    
     query = ''
     if 'search_query' in request.session:
         query = request.session['search_query']
@@ -141,7 +147,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл ты'
                     win_id = pokemon_list[0].id
                 round_сol += 1
-            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -157,7 +163,7 @@ def fights1(request, id, enemy_id):
                     result = 'Выйграл противник'
                     win_id = enemy[0].id
                 round_сol += 1
-            fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+            fight = Fight(date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
             fight.save()
             # send(fight)
             return render(request, 'aplication/fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
@@ -193,9 +199,9 @@ def fastfights(request, id):
                 result = 'Выйграл ты'
                 win_id = pokemon_list[0].id
             round_сol += 1
-        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(date=date,time=time,win_id=str(win_id),poke_id=str(pokemon_list[0].id),enemy_id=str(enemy[0].id), userid=get_id_active_user(request))
         fight.save()
-        # send(fight)
+        # send(fight, request.user.email)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy, 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
     else:
         while (hp_enemy > 0 and hp > 0):
@@ -209,31 +215,21 @@ def fastfights(request, id):
                 result = 'Выйграл противник'
                 win_id = enemy[0].id
             round_сol += 1
-        fight = Fight(int(win_id)+int(pokemon_list[0].id)+int(enemy[0].id),date,time,str(win_id),str(pokemon_list[0].id),str(enemy[0].id))
+        fight = Fight(date=date,time=time,win_id=str(win_id),poke_id=str(pokemon_list[0].id),enemy_id=str(enemy[0].id), userid=get_id_active_user(request))
         fight.save()
-        # send(fight)
+        # send(fight, request.user.email)
         return render(request, 'aplication/fast_fights.html', {'Pokemon': pokemon_list[0], 'enemy': enemy[0], 'result':result, 'round':round_сol, 'num_us':number_user, 'en_num':number_enemy})
 
 
-def send(fight):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.set_debuglevel(True)
+def get_id_active_user(request):
+    if request.user.is_authenticated:
+        return request.user.id
+    else:
+        return 0
 
-    server.starttls()
-
-    server.login('', '')
-
-    # Создаем письмо
-    msg = MIMEText('Бой №' + str(fight.fightid) + '\n Прошел ' + str(fight.date) + ' в ' + str(fight.time) + '\n Между ' + str(fight.poke_id) + ' и ' + str(fight.enemy_id) + '.')
-    msg['Subject'] = 'Победил покемон №' + str(fight.win_id)
-    msg['From'] = ''
-    msg['To'] = ''
-
-    server.sendmail('', [''], msg.as_string())
-    server.quit()
-    
 
 def send_result(request):
+
     return render(request, 'aplication/message.html', {})
 
 
@@ -303,6 +299,33 @@ def download_pokemons(request):
     return redirect('list_names', request)
 
 
+def send(fight, to_email):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.set_debuglevel(True)
+    server.starttls()
+    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+    msg = MIMEText('Бой' + '\n прошел ' + str(fight.date) + ' в ' + str(fight.time) + '\n Между ' + str(fight.poke_id) + ' и ' + str(fight.enemy_id) + '.')
+    msg['Subject'] = 'Победил покемон №' + str(fight.win_id)
+    msg['From'] = settings.EMAIL_HOST_USER
+    msg['To'] = to_email
+    server.sendmail(settings.EMAIL_HOST_USER, [to_email], msg.as_string())
+    server.quit()
+
+
+def send_mails(subject, message, from_email, to_email):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.set_debuglevel(True)
+    server.starttls()
+    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+    msg = MIMEText(message)
+    msg['Subject'] = subject
+    msg['From'] = from_email
+    msg['To'] = to_email
+    server.sendmail(from_email, [to_email], msg.as_string())
+    server.quit()
+
+
 @login_required
 def profile(request):
     return render(request, 'aplication/profile.html')
@@ -312,8 +335,46 @@ class RegisterView(FormView):
     form_class = RegisterForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy("profile")
+
     def form_valid(self, form):
-        form.save()
+        user, created = User.objects.get_or_create(email=form.cleaned_data["email"])
+        new_pass = None
+
+        if created:
+            alphabet = string.ascii_letters + string.digits
+            new_pass = ''.join(secrets.choice(alphabet) for i in range(8))
+            user.set_password(new_pass)
+            user.save(update_fields=["password", ])
+
+        if new_pass or user.is_active is False:
+            token = uuid.uuid4().hex
+            redis_key = settings.USER_CONFIRMATION_KEY.format(token=token)
+            cache.set(redis_key, {"user_id": user.id}, timeout=settings.USER_CONFIRMATION_TIMEOUT)
+
+            confirm_link = self.request.build_absolute_uri(
+                reverse_lazy(
+                    "register_confirm", kwargs={"token": token}
+                )
+            )
+            message = (f"follow this link %s \n"
+                        f"to confirm! \n" % confirm_link)
+            if new_pass:
+                message += f"Your new password {new_pass} \n "
+
+            send_mails("Please confirm your registration!", message, settings.EMAIL_HOST_USER, user.email)
         return super().form_valid(form)
+
+
+def register_confirm(request, token):
+    redis_key = settings.USER_CONFIRMATION_KEY.format(token=token)
+    useer_info = cache.get(redis_key) or {}
+
+    if user_id := useer_info.get("user_id"):
+        user = get_object_or_404(User, id=user_id)
+        user.is_active = True
+        user.save(update_fields=["is_active"])
+        return redirect(to=reverse_lazy("profile"))
+    else:
+        return redirect(to=reverse_lazy("register"))
 
 
