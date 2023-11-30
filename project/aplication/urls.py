@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import RegisterView, register_confirm
+from .views import RegisterView, register_confirm, yandex_login, yandex_callback
 
 urlpatterns = [
     path('', views.list_names, name='list_names'),
@@ -16,4 +16,6 @@ urlpatterns = [
     path('downloadpokemons/', views.download_pokemons, name='download_pokemons'),
     path('register/', RegisterView.as_view(), name="register"),
     path("register_confirm/<token>/", register_confirm, name="register_confirm"),
+    path('yandex/login/', yandex_login, name='yandex_login'),
+    path('yandex/callback/', yandex_callback, name='yandex_callback'),
 ]

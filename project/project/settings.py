@@ -149,3 +149,14 @@ LOGIN_REDIRECT_URL = reverse_lazy("aplication:profile")
 
 USER_CONFIRMATION_KEY = "user_confirmation_{token}"
 USER_CONFIRMATION_TIMEOUT = 300
+
+# PASSWORD_HASHERS = [
+#     'django.contrib.auth.hashers.Argon2PasswordHasher',
+#     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+#     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+#     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+#     'django.contrib.auth.hashers.BCryptPasswordHasher',
+# ]
+
+YANDEX_CLIENT_ID = os.environ.get('YANDEX_CLIENT_ID')
+YANDEX_CLIENT_SECRET = os.environ.get('YANDEX_CLIENT_SECRET')

@@ -22,7 +22,9 @@ import redis
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from aplication.forms import RegisterForm
-
+import requests
+from django.urls import reverse
+from django.contrib.auth import authenticate, login
 
 
 redis_client = redis.StrictRedis(host=settings.REDIS_HOST,
@@ -378,3 +380,70 @@ def register_confirm(request, token):
         return redirect(to=reverse_lazy("register"))
 
 
+
+def yandex_login(request):
+    url = 'https://oauth.yandex.ru/authorize'
+    params = {
+        'response_type': 'code',
+        'client_id': settings.YANDEX_CLIENT_ID,
+    }
+    redirect_url = request.build_absolute_uri(reverse('yandex_callback'))
+    params['redirect_uri'] = redirect_url
+    url += '?' + '&'.join([f'{k}={v}' for k, v in params.items()])
+
+    return redirect(url)
+
+
+def yandex_callback(request):
+    code = request.GET.get('code')
+
+    url = 'https://oauth.yandex.ru/token'
+    data = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'client_id': settings.YANDEX_CLIENT_ID,
+        'client_secret': settings.YANDEX_CLIENT_SECRET,
+    }
+    response = requests.post(url, data=data)
+
+    access_token = response.json().get('access_token')
+
+    url = 'https://login.yandex.ru/info'
+    headers = {'Authorization': f'OAuth {access_token}'}
+    response = requests.get(url, headers=headers)
+
+    data = response.json()
+    email = data.get('default_email')
+
+    user = authenticate(request, email=email)
+    if not user:
+        user, created = User.objects.get_or_create(
+            username=email,
+            email=email,
+        )
+        new_pass = None
+        if created:
+            alphabet = string.ascii_letters + string.digits
+            new_pass = ''.join(secrets.choice(alphabet) for i in range(8))
+            user.set_password(new_pass)
+            user.save(update_fields=["password", ])
+
+        if new_pass or user.is_active is False:
+            token = uuid.uuid4().hex
+            redis_key = settings.USER_CONFIRMATION_KEY.format(token=token)
+            cache.set(redis_key, {"user_id": user.id}, timeout=settings.USER_CONFIRMATION_TIMEOUT)
+
+            confirm_link = request.build_absolute_uri(
+                reverse_lazy(
+                    "register_confirm", kwargs={"token": token}
+                )
+            )
+            message = (f"follow this link %s \n"
+                        f"to confirm! \n" % confirm_link)
+            if new_pass:
+                message += f"Your new password {new_pass} \n "
+            
+            send_mails("Please confirm your registration!", message, settings.EMAIL_HOST_USER, user.email)
+    login(request, user)
+
+    return redirect('/')
