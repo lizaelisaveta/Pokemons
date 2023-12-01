@@ -416,6 +416,7 @@ def yandex_callback(request):
     email = data.get('default_email')
 
     user = authenticate(request, email=email)
+    url = 'http://127.0.0.1:8000/profile/'
     if not user:
         user, created = User.objects.get_or_create(
             username=email,
@@ -440,10 +441,11 @@ def yandex_callback(request):
             )
             message = (f"follow this link %s \n"
                         f"to confirm! \n" % confirm_link)
+            url = confirm_link
             if new_pass:
                 message += f"Your new password {new_pass} \n "
             
             send_mails("Please confirm your registration!", message, settings.EMAIL_HOST_USER, user.email)
     login(request, user)
 
-    return redirect('/')
+    return redirect(url)
