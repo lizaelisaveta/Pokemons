@@ -315,6 +315,7 @@ def send(fight, to_email):
     server.quit()
 
 
+
 def send_mails(subject, message, from_email, to_email):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.set_debuglevel(True)
