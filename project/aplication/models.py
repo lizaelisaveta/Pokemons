@@ -16,6 +16,7 @@ class Fight(models.Model):
     enemy_id = models.ImageField(db_column='EnemyId')
     fightid = models.UUIDField(db_column='FightId', primary_key=True, default=uuid.uuid4, editable=False)
     userid = models.IntegerField(db_column='UserId')
+    round_count = models.IntegerField(db_column='CountRound')
 
 
     def __str__(self):
